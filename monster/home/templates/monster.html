@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Lacquer&family=Monofett&display=swap" rel="stylesheet">
+</head>
+<style>
+/* button {
+  position: relative;
+  font-weight: 600;
+  font-size: 50px;
+  height: 100px;
+  width: 500px;
+  padding: 12px 20px;
+  outline: none;
+  border: 1px solid white;
+  background-color: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  left: 10px;
+  height: 100%;
+  background-color: #4AF626;
+  z-index: -1;
+  transition: all 0.35s;
+  border-radius: inherit;
+}
+
+button:hover:after {
+  top: 0px;
+  left: 0px;
+} */
+
+
+.button {
+  min-width: 300px;
+  min-height: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #313133;
+  background: #4AF626;
+  background: linear-gradient(90deg, #4AF626 0%, #4AF626 100%);
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+  }
+
+button::before {
+content: '';
+  border-radius: 1000px;
+  min-width: calc(300px + 12px);
+  min-height: calc(60px + 12px);
+  border: 6px solid #4AF626;
+  box-shadow: 0 0 60px #4AF626;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all .3s ease-in-out 0s;
+}
+
+.button:hover, .button:focus {
+  color: white;
+  transform: translateY(-6px);
+}
+
+button:hover::before, button:focus::before {
+  opacity: 1;
+}
+
+button::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid #4AF626;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+button:hover::after, button:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+
+  
+}
+
+</style>
+
+
+<body style="background-color: black;">
+<div style="text-align: center;">
+<p style="font-family: 'Press Start 2P', cursive; color: #4AF626; font-size: 80px;"><i style="font-size: 120px; color: white;" class="fa-solid fa-ghost"></i> KUAICV SERVER MONITORING MONSTER <i style="font-size: 120px; color: white;" class="fa-solid fa-ghost"></i></p>
+<!-- <p style="font-family: 'Lacquer', cursive; color: #4AF626; font-size: 100px;"><i style="font-size: 120px; color: white;" class="fa-solid fa-ghost"></i> KUAICV SERVER MONITORING MONSTER <i style="font-size: 120px; color: white;" class="fa-solid fa-ghost"></i></p> -->
+<span id="clock" style="font-family: 'Press Start 2P', cursive; color:gray; font-size: 50px;">clock</span>
+<span id="apm" style="font-family: 'Press Start 2P', cursive; color:gray; font-size: 50px;"  >ampm</span>
+<div style="margin-top: 80px;">
+<!-- <button style="font-family: 'Press Start 2P', cursive;">REFRESH</button> -->
+    <div class="wrap">
+        <button style="font-family: 'Press Start 2P', cursive;" onClick="window.location.reload();" class="button"><i style="font-size: 30px; color: white; margin-right: 20px;" class="fa-solid fa-rotate"></i>REFRESH</button>
+    </div>
+</div>
+</div>
+<div style="margin-left: 400px; margin-right: 400px; padding: 50px;">
+    <div style="margin-bottom: 100px;">
+        <p style="font-family: 'Press Start 2P', cursive; color: #4AF626;; font-size: 60px;"><i style="font-size: 80px; color: white;" class="fa-solid fa-play"></i> SERVER 16</p>
+        <div id="server16" style="margin-left:100px"></div>
+    </div>
+    <div>
+        <p style="font-family: 'Press Start 2P', cursive; color: #4AF626;; font-size: 60px;"><i style="font-size: 80px; color: white;" class="fa-solid fa-play"></i> SERVER 18</p>
+        <div id="server18" style="margin-left:100px"></div>
+    </div>
+</div>
+
+</body>
+<script>
+    let server_status_16 = JSON.parse("{{SERVER16}}".replaceAll("&quot;", '"'))
+    let server_status_18 = JSON.parse("{{SERVER18}}".replaceAll("&quot;", '"'))
+
+    const server16 = document.getElementById("server16")
+    const server18 = document.getElementById("server18")
+    
+
+    for (i=0;i<server_status_16.length; i++){
+        console.log(server_status_16[i])
+        item = document.createElement("div");
+        item.innerHTML = '<p style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;">' + server_status_16[i]['number'] + '     ' +server_status_16[i]['model'] + '</p>'
+        item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Temperature : ' + server_status_16[i]['temp'] + ' &nbsp;&nbsp;|&nbsp;&nbsp; </span>' 
+
+        let using_rate = parseInt(server_status_16[i]['curr']) / parseInt(server_status_16[i]['full'])
+        if (using_rate > 0.75){
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: orange">' + server_status_16[i]['curr'] + '</span> / ' + server_status_16[i]['full'] + '</span><br><br><br><br>'    
+        }else if (using_rate > 0.25){
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: yellow">' + server_status_16[i]['curr'] + '</span> / ' + server_status_16[i]['full'] + '</span><br><br><br><br>'    
+        }else{
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: skyblue">' + server_status_16[i]['curr'] + '</span> / ' + server_status_16[i]['full'] + '</span><br><br><br><br>'    
+        }
+        server16.appendChild(item)
+    }
+
+    for (i=0;i<server_status_18.length; i++){
+        console.log(server_status_18[i])
+        item = document.createElement("div");
+        item.innerHTML = '<p style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;">' + server_status_18[i]['number'] + '     ' +server_status_18[i]['model'] + '</p>'
+        let temperature = parseInt(server_status_18[i]['temp'])
+        if (temperature > 80){
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Temperature : <span style="color: red">' + server_status_18[i]['temp'] + '</span> &nbsp;&nbsp;|&nbsp;&nbsp; </span>' 
+        }else{
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Temperature : ' + server_status_18[i]['temp'] + ' &nbsp;&nbsp;|&nbsp;&nbsp; </span>' 
+        }
+        
+        
+        
+        let using_rate = parseInt(server_status_18[i]['curr']) / parseInt(server_status_18[i]['full'])
+        if (using_rate > 0.75){
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: orange">' + server_status_18[i]['curr'] + '</span> / ' + server_status_18[i]['full'] + '</span><br><br><br><br>'    
+        }else if (using_rate > 0.25){
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: yellow">' + server_status_18[i]['curr'] + '</span> / ' + server_status_18[i]['full'] + '</span><br><br><br><br>'    
+        }else{
+            item.innerHTML += '<span style="font-family: \'Press Start 2P\', cursive; color: white; font-size: 35px;"> Status : <span style="color: skyblue">' + server_status_18[i]['curr'] + '</span> / ' + server_status_18[i]['full'] + '</span><br><br><br><br>'    
+        }
+        server18.appendChild(item)
+    }
+
+    var Target = document.getElementById("clock");
+    var Target_apm = document.getElementById("apm");
+    function clock() {
+        var time = new Date();
+        var hours = time.getHours();
+        var minutes = time.getMinutes();
+        var seconds = time.getSeconds();
+        var AmPm ="AM";
+        if(hours > 12){   
+            var AmPm ="PM";
+            hours %= 12;
+        }
+
+        Target.innerText = 
+        `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+        Target_apm.innerText = `${AmPm}`;
+
+    }
+    clock();
+    setInterval(clock, 1000); // 1초마다 실행
+</script>
+
+</html>
